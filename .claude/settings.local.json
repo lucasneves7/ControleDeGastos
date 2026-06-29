@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\" -Force)",
+      "Bash(Select-Object Name, FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\\\\app\\\\src\\\\main\\\\java\" -Recurse | Where-Object {$_.Extension -eq '.kt'} | Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\" -Recurse -File)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\" -Recurse -Filter \"*.kt\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "PowerShell(head *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\\\\app\\\\src\\\\main\\\\java\\\\com\\\\lucasneves\\\\financecontrol\" -Recurse -Filter \"*.kt\")",
+      "Bash(Get-ChildItem -Recurse -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\\\\app\\\\src\\\\main\\\\java\\\\com\\\\lucasneves\\\\financecontrol\\\\ui\" -Filter \"*.kt\")",
+      "Bash(Sort-Object)"
+    ]
+  }
+}
