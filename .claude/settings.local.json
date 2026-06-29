@@ -13,7 +13,11 @@
       "PowerShell(head *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\\\\app\\\\src\\\\main\\\\java\\\\com\\\\lucasneves\\\\financecontrol\" -Recurse -Filter \"*.kt\")",
       "Bash(Get-ChildItem -Recurse -Path \"C:\\\\Users\\\\lf129\\\\AndroidStudioProjects\\\\financeControl\\\\app\\\\src\\\\main\\\\java\\\\com\\\\lucasneves\\\\financecontrol\\\\ui\" -Filter \"*.kt\")",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "PowerShell(git fetch *)",
+      "PowerShell(git ls-remote *)",
+      "PowerShell(git push *)",
+      "PowerShell(git *)"
     ]
   }
 }
