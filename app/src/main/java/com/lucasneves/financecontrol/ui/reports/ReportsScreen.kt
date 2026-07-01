@@ -32,7 +32,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -74,20 +73,25 @@ fun ReportsScreen(
     val state by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(bottomPadding)) {
-        TopAppBar(
-            title = { Text("Relatórios") },
-            actions = {
-                IconButton(onClick = { viewModel.loadData() }) {
-                    Icon(Icons.Default.Refresh, contentDescription = "Atualizar")
-                }
-            }
-        )
-        MonthNavigator(
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MonthNavigator(
                 selectedMonth = state.selectedMonth,
                 onPrevious = { viewModel.selectMonth(DateUtils.previousMonth(state.selectedMonth)) },
                 onNext = { viewModel.selectMonth(DateUtils.nextMonth(state.selectedMonth)) },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             )
+            IconButton(
+                onClick = { viewModel.loadData() },
+                modifier = Modifier.padding(end = 4.dp)
+            ) {
+                Icon(Icons.Default.Refresh, contentDescription = "Atualizar")
+            }
+        }
 
             PrimaryTabRow(selectedTabIndex = state.selectedTab.ordinal) {
                 ReportTab.entries.forEach { tab ->

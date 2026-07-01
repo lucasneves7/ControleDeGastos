@@ -23,8 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -106,20 +104,6 @@ fun OverviewScreen(
 
     Column(modifier = Modifier.fillMaxSize().padding(bottomPadding)) {
 
-        TopAppBar(
-            title = { Text("FinanceControl", style = MaterialTheme.typography.titleLarge) },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor    = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ),
-            actions = {
-                IconButton(onClick = { showLogoutDialog = true }) {
-                    Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Sair")
-                }
-            }
-        )
-
         Box(modifier = Modifier.fillMaxSize()) {
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -141,12 +125,29 @@ fun OverviewScreen(
                                 color    = MaterialTheme.colorScheme.primaryContainer,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                MonthNavigator(
-                                    selectedMonth = state.selectedMonth,
-                                    onPrevious    = { viewModel.selectMonth(DateUtils.previousMonth(state.selectedMonth)) },
-                                    onNext        = { viewModel.selectMonth(DateUtils.nextMonth(state.selectedMonth)) },
-                                    modifier      = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    MonthNavigator(
+                                        selectedMonth = state.selectedMonth,
+                                        onPrevious    = { viewModel.selectMonth(DateUtils.previousMonth(state.selectedMonth)) },
+                                        onNext        = { viewModel.selectMonth(DateUtils.nextMonth(state.selectedMonth)) },
+                                        modifier      = Modifier
+                                            .weight(1f)
+                                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                                    )
+                                    IconButton(
+                                        onClick  = { showLogoutDialog = true },
+                                        modifier = Modifier.padding(end = 4.dp)
+                                    ) {
+                                        Icon(
+                                            Icons.AutoMirrored.Filled.Logout,
+                                            contentDescription = "Sair",
+                                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                        )
+                                    }
+                                }
                             }
                         }
 

@@ -2,34 +2,35 @@ package com.lucasneves.financecontrol.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// ── Ouro (Gold) — Primary ──────────────────────────────────────────
-val Gold10 = Color(0xFF221B00)
-val Gold20 = Color(0xFF3B2E00)
-val Gold30 = Color(0xFF564300)
-val Gold40 = Color(0xFF725800)   // light mode primary
-val Gold80 = Color(0xFFEAC76B)   // dark mode primary
-val Gold90 = Color(0xFFFFDF9D)   // light mode primaryContainer
-val Gold95 = Color(0xFFFFF0D1)
-val Gold99 = Color(0xFFFFFBF5)   // background (warm white)
+// ── Teal — Primary ───────────────────────────────────────────
+val Teal10  = Color(0xFF001F24)   // onPrimaryContainer / dark bg
+val Teal20  = Color(0xFF003640)   // onPrimary dark
+val Teal30  = Color(0xFF004E5C)   // primaryContainer dark
+val Teal40  = Color(0xFF006877)   // primary light
+val Teal80  = Color(0xFF4DD8EF)   // primary dark
+val Teal90  = Color(0xFFB8E8F4)   // primaryContainer light — barra de mês
+val Teal95  = Color(0xFFD8F4FC)
+val Teal99  = Color(0xFFF3FBFD)   // background — quase branco
 
-// ── Prata (Silver) — Secondary ─────────────────────────────────────
-val Silver10 = Color(0xFF1E1B16)
-val Silver20 = Color(0xFF33302A)
-val Silver30 = Color(0xFF4A4640)
-val Silver40 = Color(0xFF625D57)  // light mode secondary
-val Silver80 = Color(0xFFCEC8C1)  // dark mode secondary
-val Silver90 = Color(0xFFECE5DE)  // light mode secondaryContainer
-val Silver95 = Color(0xFFFAF3EC)
+// ── Azul — Secundário ────────────────────────────────────────
+val Blue10  = Color(0xFF001E2F)
+val Blue20  = Color(0xFF003450)
+val Blue30  = Color(0xFF004C72)   // secondaryContainer dark
+val Blue40  = Color(0xFF006492)   // secondary light
+val Blue80  = Color(0xFF82CFFF)   // secondary dark
+val Blue90  = Color(0xFFC8E6FF)   // secondaryContainer light — indicador nav
+val Blue95  = Color(0xFFE6F3FF)
 
-// ── Verde (Green) — Tertiary / Income ──────────────────────────────
-val Green10 = Color(0xFF002110)
-val Green20 = Color(0xFF00391D)
-val Green30 = Color(0xFF005229)
-val Green40 = Color(0xFF22693A)   // light mode tertiary
-val Green80 = Color(0xFF71D392)   // dark mode tertiary
-val Green90 = Color(0xFFACF0C1)   // light mode tertiaryContainer
+// ── Neutro (leve tint teal) ──────────────────────────────────
+val Neutral10 = Color(0xFF171D1E)
+val Neutral20 = Color(0xFF2B3133)
+val Neutral30 = Color(0xFF414849)
+val Neutral40 = Color(0xFF585F61)
+val Neutral80 = Color(0xFFBFC8CA)
+val Neutral90 = Color(0xFFDBE4E6)  // surface containers — navegação
+val Neutral95 = Color(0xFFEAF2F4)  // card background
 
-// ── Semantic (transações) ──────────────────────────────────────────
-val IncomeGreen = Color(0xFF1A6835)
-val ExpenseRed  = Color(0xFFBA1A1A)
+// ── Semântico (receita / despesa / transferência) ────────────
+val IncomeGreen  = Color(0xFF006E28)
+val ExpenseRed   = Color(0xFFBA1A1A)
 val TransferBlue = Color(0xFF1A6488)
