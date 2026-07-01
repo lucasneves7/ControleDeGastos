@@ -27,7 +27,16 @@ class StatementViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(StatementUiState())
     val uiState: StateFlow<StatementUiState> = _uiState.asStateFlow()
 
-    init { loadData() }
+    private var dataLoaded = false
+
+    fun loadOnResume() {
+        if (!dataLoaded) {
+            dataLoaded = true
+            loadData(refresh = false)
+        } else {
+            loadData(refresh = true)
+        }
+    }
 
     fun loadData(refresh: Boolean = false) {
         viewModelScope.launch {

@@ -1,5 +1,6 @@
 package com.lucasneves.financecontrol.di
 
+import com.lucasneves.financecontrol.data.remote.DriveApiService
 import com.lucasneves.financecontrol.data.remote.SheetsApiService
 import com.lucasneves.financecontrol.data.repository.AuthRepository
 import dagger.Module
@@ -11,6 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -48,4 +50,19 @@ object NetworkModule {
     @Singleton
     fun provideSheetsApiService(retrofit: Retrofit): SheetsApiService =
         retrofit.create(SheetsApiService::class.java)
+
+    @Provides
+    @Singleton
+    @Named("drive")
+    fun provideDriveRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl("https://www.googleapis.com/drive/v3/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideDriveApiService(@Named("drive") retrofit: Retrofit): DriveApiService =
+        retrofit.create(DriveApiService::class.java)
 }

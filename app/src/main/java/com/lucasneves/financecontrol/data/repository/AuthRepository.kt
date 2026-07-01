@@ -83,8 +83,8 @@ class AuthRepository @Inject constructor(
                 .addOnFailureListener { e -> cont.resumeWithException(e) }
         }
 
-    suspend fun signOut(activityContext: Context) {
-        val credentialManager = CredentialManager.create(activityContext)
+    suspend fun signOut() {
+        val credentialManager = CredentialManager.create(context)
         credentialManager.clearCredentialState(ClearCredentialStateRequest())
         prefs.edit().remove(KEY_EMAIL).remove(KEY_NAME).remove(KEY_PHOTO).apply()
     }

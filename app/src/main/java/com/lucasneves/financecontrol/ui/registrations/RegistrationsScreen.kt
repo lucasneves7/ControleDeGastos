@@ -13,8 +13,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -29,7 +31,13 @@ fun RegistrationsScreen(
         modifier = Modifier.fillMaxSize().padding(bottomPadding)
     ) {
         item {
-            TopAppBar(title = { Text("Cadastros") })
+            TopAppBar(
+                title  = { Text("Cadastros") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor    = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            )
         }
         item {
             ListItem(

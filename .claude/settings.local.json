@@ -17,7 +17,9 @@
       "PowerShell(git fetch *)",
       "PowerShell(git ls-remote *)",
       "PowerShell(git push *)",
-      "PowerShell(git *)"
+      "PowerShell(git *)",
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)"
     ]
   }
 }

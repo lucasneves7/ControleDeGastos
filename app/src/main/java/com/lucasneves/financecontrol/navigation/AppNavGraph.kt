@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -66,9 +67,11 @@ fun AppNavGraph(startSignedIn: Boolean = false) {
         },
         floatingActionButton = {
             if (currentRoute in fabRoutes) {
-                FloatingActionButton(onClick = {
-                    navController.navigate(Screen.AddTransaction.createRoute())
-                }) {
+                FloatingActionButton(
+                    onClick          = { navController.navigate(Screen.AddTransaction.createRoute()) },
+                    containerColor   = MaterialTheme.colorScheme.primary,
+                    contentColor     = MaterialTheme.colorScheme.onPrimary
+                ) {
                     Icon(Icons.Default.Add, contentDescription = "Novo lançamento")
                 }
             }
@@ -88,7 +91,12 @@ fun AppNavGraph(startSignedIn: Boolean = false) {
                     bottomPadding = innerPadding,
                     onEditTransaction = { id -> navController.navigate(Screen.EditTransaction.createRoute(id)) },
                     onAllTransactions = { navController.navigate(Screen.AllTransactions.route) },
-                    onDayAddTransaction = { date -> navController.navigate(Screen.AddTransaction.createRoute(date)) }
+                    onDayAddTransaction = { date -> navController.navigate(Screen.AddTransaction.createRoute(date)) },
+                    onLogout = {
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
                 )
             }
 

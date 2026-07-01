@@ -2,6 +2,7 @@ package com.lucasneves.financecontrol.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.lucasneves.financecontrol.data.remote.DriveApiService
 import com.lucasneves.financecontrol.data.remote.SheetsApiService
 import com.lucasneves.financecontrol.data.remote.dto.CreateSpreadsheetDto
 import com.lucasneves.financecontrol.data.remote.dto.SheetDto
@@ -17,13 +18,28 @@ import javax.inject.Singleton
 class SpreadsheetRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val sheetsApiService: SheetsApiService,
+    private val driveApiService: DriveApiService,
     private val prefs: SharedPreferences
 ) {
     private var cachedSpreadsheetId: String? = prefs.getString(Constants.PREF_SPREADSHEET_ID, null)
     private val cachedSheetIds = mutableMapOf<String, Int>()
 
+    private suspend fun findExistingSpreadsheet(): String? = try {
+        val query = "name = '${Constants.SPREADSHEET_NAME}' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false"
+        driveApiService.listFiles(query).files.firstOrNull()?.id
+    } catch (e: Exception) {
+        null
+    }
+
     suspend fun getOrCreateSpreadsheet(): String {
         cachedSpreadsheetId?.let { return it }
+
+        val existingId = findExistingSpreadsheet()
+        if (existingId != null) {
+            prefs.edit().putString(Constants.PREF_SPREADSHEET_ID, existingId).apply()
+            cachedSpreadsheetId = existingId
+            return existingId
+        }
 
         val response = sheetsApiService.createSpreadsheet(
             CreateSpreadsheetDto(

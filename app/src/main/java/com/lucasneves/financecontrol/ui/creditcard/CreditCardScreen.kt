@@ -11,9 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -25,6 +27,7 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -50,21 +54,34 @@ fun CreditCardScreen(
     onEditTransaction: (String) -> Unit,
     viewModel: CreditCardViewModel = hiltViewModel()
 ) {
+    LifecycleResumeEffect(Unit) {
+        viewModel.loadOnResume()
+        onPauseOrDispose { }
+    }
+
     val state by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(bottomPadding)) {
-        TopAppBar(title = { Text("Fatura") })
+        TopAppBar(
+            title = { Text("Fatura") },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor    = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        )
 
+        Box(modifier = Modifier.fillMaxSize()) {
         when {
             state.isLoading -> {
-                Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    CircularProgressIndicator()
-                }
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
             state.creditAccounts.isEmpty() -> {
-                Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Nenhum cartão de crédito cadastrado.", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
+                Text(
+                    "Nenhum cartão de crédito cadastrado.",
+                    style    = MaterialTheme.typography.bodyLarge,
+                    color    = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
             else -> {
                 PullToRefreshBox(
@@ -113,7 +130,7 @@ fun CreditCardScreen(
                             item {
                                 val billingTotal = viewModel.getBillingTotal()
                                 val available = ((account?.creditLimit ?: 0.0) - billingTotal).coerceAtLeast(0.0)
-                                Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
+                                ElevatedCard(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
                                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                             Text("Fatura", style = MaterialTheme.typography.labelMedium)
@@ -171,6 +188,7 @@ fun CreditCardScreen(
                 }
             }
         }
+        } // Box
     }
 }
 

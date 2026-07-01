@@ -1,17 +1,24 @@
 package com.lucasneves.financecontrol.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.lucasneves.financecontrol.data.model.Category
 import com.lucasneves.financecontrol.data.model.Transaction
@@ -28,35 +35,46 @@ fun TransactionListItem(
     accountName: String,
     onClick: () -> Unit
 ) {
+    val (amountText, amountColor, dotColor) = when (transaction.type) {
+        TransactionType.INCOME   -> Triple("+${CurrencyUtils.format(transaction.amount)}", IncomeGreen,   IncomeGreen)
+        TransactionType.EXPENSE  -> Triple("-${CurrencyUtils.format(transaction.amount)}", ExpenseRed,    ExpenseRed)
+        TransactionType.TRANSFER -> Triple(CurrencyUtils.format(transaction.amount),       TransferBlue,  TransferBlue)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        // Indicador colorido de tipo
+        Box(
+            modifier = Modifier
+                .size(10.dp)
+                .clip(CircleShape)
+                .background(dotColor)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = transaction.description.ifEmpty { category?.name ?: "Transferência" },
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1
             )
             Text(
                 text = accountName,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        val (amountText, amountColor) = when (transaction.type) {
-            TransactionType.INCOME -> "+${CurrencyUtils.format(transaction.amount)}" to IncomeGreen
-            TransactionType.EXPENSE -> "-${CurrencyUtils.format(transaction.amount)}" to ExpenseRed
-            TransactionType.TRANSFER -> CurrencyUtils.format(transaction.amount) to TransferBlue
-        }
+
         Text(
             text = amountText,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleSmall,
             color = amountColor
         )
     }
-    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 }

@@ -29,7 +29,16 @@ class CreditCardViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CreditCardUiState())
     val uiState: StateFlow<CreditCardUiState> = _uiState.asStateFlow()
 
-    init { loadData() }
+    private var dataLoaded = false
+
+    fun loadOnResume() {
+        if (!dataLoaded) {
+            dataLoaded = true
+            loadData(refresh = false)
+        } else {
+            loadData(refresh = true)
+        }
+    }
 
     fun loadData(refresh: Boolean = false) {
         viewModelScope.launch {

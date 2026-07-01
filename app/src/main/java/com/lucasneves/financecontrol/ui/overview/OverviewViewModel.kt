@@ -7,12 +7,17 @@ import com.lucasneves.financecontrol.data.model.DayMarkType
 import com.lucasneves.financecontrol.data.model.Transaction
 import com.lucasneves.financecontrol.data.model.TransactionType
 import com.lucasneves.financecontrol.data.repository.AccountRepository
+import com.lucasneves.financecontrol.data.repository.AuthRepository
 import com.lucasneves.financecontrol.data.repository.CategoryRepository
+import com.lucasneves.financecontrol.data.repository.SpreadsheetRepository
 import com.lucasneves.financecontrol.data.repository.TransactionRepository
 import com.lucasneves.financecontrol.util.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,13 +28,35 @@ import javax.inject.Inject
 class OverviewViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val categoryRepository: CategoryRepository,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val authRepository: AuthRepository,
+    private val spreadsheetRepository: SpreadsheetRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OverviewUiState())
     val uiState: StateFlow<OverviewUiState> = _uiState.asStateFlow()
 
-    init { loadData() }
+    private val _loggedOut = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val loggedOut: SharedFlow<Unit> = _loggedOut.asSharedFlow()
+
+    private var dataLoaded = false
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.signOut()
+            spreadsheetRepository.clearSpreadsheetId()
+            _loggedOut.emit(Unit)
+        }
+    }
+
+    fun loadOnResume() {
+        if (!dataLoaded) {
+            dataLoaded = true
+            loadData(refresh = false)
+        } else {
+            loadData(refresh = true)
+        }
+    }
 
     fun loadData(refresh: Boolean = false) {
         viewModelScope.launch {
